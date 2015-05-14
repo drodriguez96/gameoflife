@@ -1,28 +1,77 @@
-# Compiled Object files
-*.slo
-*.lo
-*.o
-*.obj
+//sample setup to start the game of life - startlife.cpp
 
-# Precompiled Headers
-*.gch
-*.pch
+#include <iostream>
+#include <fstream>
+#include <iomanip>
+using namespace std;
 
-# Compiled Dynamic libraries
-*.so
-*.dylib
-*.dll
+const int SIZE = 20;
 
-# Fortran module files
-*.mod
+//initial function prototypes
+void initGrid(bool life[][SIZE]);
+void readGrid(bool life[][SIZE]);
+void printGrid(bool life[][SIZE]);
 
-# Compiled Static libraries
-*.lai
-*.la
-*.a
-*.lib
+int main()
+{
+    bool life[SIZE][SIZE];
 
-# Executables
-*.exe
-*.out
-*.app
+    readGrid(life);
+   /* for (int count = 0; count < 5; count++){
+        determineNextGen(life);
+    }*/
+
+    printGrid(life);
+
+    return 0;
+}
+
+
+/*-------------------------------------------------------
+
+           readGrid (and related functions)
+
+---------------------------------------------------------*/
+
+void readGrid(bool life[][SIZE])
+{
+    ifstream infile("bacteria.txt"); //see class site project#5 for data file
+
+    int numBacteria, row, col;
+
+    initGrid(life);
+
+    infile >> row >> col;
+    while (infile){
+        life[row][col] = true;
+        infile >> row >> col;
+    }
+    infile.close();
+}
+
+
+void initGrid(bool life[][SIZE])
+{
+    for (int row = 0; row < SIZE; row++){
+        for (int col = 0; col < SIZE; col++){
+            life[row][col] = false;
+        }
+    }
+}
+
+void printGrid(bool life[][SIZE])
+{
+    cout << "  01234567890123456789" << endl;
+    for (int row = 0; row < SIZE; row++){
+        cout << setw(2) << row;
+        for (int col = 0; col < SIZE; col++){
+            if (life[row][col]){
+                cout << "*";
+            }
+             else {
+                cout << " ";
+                   }
+        }
+        cout << endl;
+    }
+}
